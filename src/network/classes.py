@@ -15,11 +15,13 @@ class Node():
         for node in self.neighbors:
             if (node.get_goop_levels() < self.goop):
                 self.send_goop_to(node)
+        if (self.goop > self.max_goop):
+            self.goop = self.max_goop
 
     def send_goop_to(self, node):
         '''Send goop to a connected node'''
-        self.goop -= 1
-        pass
+        self.goop -= 2
+        node.goop += 2
 
     def get_goop_levels(self):
         '''Return the current ammount of goop'''
@@ -29,7 +31,7 @@ class Node():
         '''Add a node to the neighbors list'''
         self.neighbors.append(node)
 
-def Producer(Node):
+class Producer(Node):
     '''A network node that produces goop'''
     def balance(self):
         self.goop += 5
