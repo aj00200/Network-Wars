@@ -1,5 +1,8 @@
+import libs.matrix
+
 class Node():
     '''A Basic Network Node'''
+    max_goop = 100
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -20,8 +23,8 @@ class Node():
 
     def send_goop_to(self, node):
         '''Send goop to a connected node'''
-        self.goop -= 2
-        node.goop += 2
+        self.goop -= 0.001
+        node.goop += 0.001
 
     def get_goop_levels(self):
         '''Return the current ammount of goop'''
@@ -34,5 +37,29 @@ class Node():
 class Producer(Node):
     '''A network node that produces goop'''
     def balance(self):
-        self.goop += 5
+        self.goop += 0.001
         Node.balance(self)
+
+class Network():
+    '''Used to create a network of nodes for
+    each player inside of the game'''
+    def __init__(self):
+        self.network = libs.matrix.Matrix(64,48)
+
+    def check_collision(self, x, y):
+        '''Check if there is an object on
+        the (x,y) point'''
+        if self.network[x][y] == 0:
+            return False
+        else:
+            return True
+
+    def update(self):
+        '''Calls the balance method for each
+        node inside the network'''
+        pass
+
+    def add_node(self, node):
+        '''Add the node, node, to the network'''
+        if not self.check_cossision(node.x, node.y):
+            self.network[node.x][node.y] = node
