@@ -8,7 +8,7 @@ class Matrix(object):
             each_row = []
             for j in range(cols):
                 each_row.append(0)
-            self.matrix.append(ea_row)
+            self.matrix.append(each_row)
 
     def __getitem__(self, index):
         return self.matrix[index]
