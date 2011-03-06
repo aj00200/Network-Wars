@@ -3,6 +3,7 @@ import asyncore
 import asynchat
 import re
 import ssl
+import random
 
 connections = {}
 class Connection(asynchat.async_chat):
@@ -15,6 +16,7 @@ class Connection(asynchat.async_chat):
         self.ssl = use_ssl
         self.__address__ = address
         self.set_terminator('\r\n')
+        self.channel = "#Network-Wars.lobby"
 
         # Setup Socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -60,12 +62,14 @@ class Connection(asynchat.async_chat):
             nick = data[1:data.find('!')]
             channel = data[data.find('MSG')+4:data.find(' :')]
             if channel == self.channel:
+				pass
                 # Queue the message for read
 
         elif command ==  'NOTICE':
             nick = data[1:data.find('!')]
             channel = data[data.find('ICE')+4:data.find(' :')]
             if channel == self.channel:
+				pass
                 # Queue the notice for read
 
         elif command ==  'JOIN':
@@ -88,3 +92,4 @@ def connect(address, port = 6667, use_ssl = False):
     port - On optional argument that specifies the port to connect on
     ssl - A boolean argument specifying wether or not to use SSL'''
     connections[address] = Connection(address, port, use_ssl)
+    asyncore.loop()
