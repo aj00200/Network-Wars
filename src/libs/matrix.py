@@ -1,5 +1,5 @@
 class Matrix(object):
-    def __init__(self, cols, rows):
+    def __init__(self, rows, cols):
         self.cols = cols
         self.rows = rows
         # initialize matrix and fill with zeroes

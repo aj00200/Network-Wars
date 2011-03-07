@@ -37,7 +37,7 @@ class Node():
 class Producer(Node):
     '''A network node that produces goop'''
     def balance(self):
-        self.goop += 0.001
+        self.goop += 0.0001
         Node.balance(self)
 
 class Network():
@@ -45,6 +45,7 @@ class Network():
     each player inside of the game'''
     def __init__(self):
         self.network = libs.matrix.Matrix(64,48)
+        self.nodes = []
 
     def check_collision(self, x, y):
         '''Check if there is an object on
@@ -61,5 +62,17 @@ class Network():
 
     def add_node(self, node):
         '''Add the node, node, to the network'''
-        if not self.check_cossision(node.x, node.y):
+        if not self.check_collision(node.x, node.y):
             self.network[node.x][node.y] = node
+            self.nodes.append(node)
+
+            # Find its neighbors
+            for neighbor in self.get_neighbors(node.x, node.y):
+                node.add_neighbor(neighbor)
+                neighbor.add_neighbor(node)
+
+    def get_neighbors(self, x, y):
+        return [self.network[0][0]]
+
+    def get_node(self, x, y):
+        return self.network[x][y]
