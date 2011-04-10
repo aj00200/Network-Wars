@@ -46,8 +46,6 @@ def handle_events():
 def draw_node(node):
     '''Draw all the nodes to the screen'''
     rect = pygame.Rect(node.x*10, node.y*10, 10, 10)
-    lrect = pygame.Rect(node.x*10-10, node.y*10-10, 30, 30)
-    screen.blit(display.pipes.pipes, pygame.Rect(0,0,200,200), pygame.Rect(0,0,200,200))
     screen.blit(media.loader.node_img, rect)
     add_dirty_rect(rect)
 
@@ -63,3 +61,4 @@ def loop():
     network.network.balance_nodes()
     pygame.display.update(dirty_rects)
     dirty_rects = []
+    pygame.time.delay(int(1000 * 1.0/40))
