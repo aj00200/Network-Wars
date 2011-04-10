@@ -15,4 +15,3 @@ def handle_click(x, y):
         else:
             node = network.classes.Node(x, y)
             network.network.network.add_node(node)
-            display.manager.draw_node(node)

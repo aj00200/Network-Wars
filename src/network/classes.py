@@ -1,4 +1,5 @@
 import libs.matrix
+import display.pipes
 
 class Node():
     '''A Basic Network Node'''
@@ -33,6 +34,7 @@ class Node():
     def add_neighbor(self, node):
         '''Add a node to the neighbors list'''
         self.neighbors.append(node)
+        display.pipes.draw_pipe(self.x, self.y, node.x, node.y)
 
 class Producer(Node):
     '''A network node that produces goop'''
@@ -44,8 +46,13 @@ class Network():
     '''Used to create a network of nodes for
     each player inside of the game'''
     def __init__(self):
-        self.network = libs.matrix.Matrix(64,48)
+        self.network = libs.matrix.Matrix(66,50) # 64x48
+        #   larger to avoid IndexError when searching nearby
         self.nodes = []
+
+        # Create some starter nodes
+        self.add_node(Producer(5, 5))
+        self.add_node(Node(7, 5))
 
     def check_collision(self, x, y):
         '''Check if there is an object on
@@ -55,16 +62,18 @@ class Network():
         else:
             return True
 
-    def update(self):
+    def balance(self):
         '''Calls the balance method for each
         node inside the network'''
-        pass
+        for node in self.nodes:
+            node.balance() 
 
     def add_node(self, node):
         '''Add the node, node, to the network'''
         if not self.check_collision(node.x, node.y):
             self.network[node.x][node.y] = node
             self.nodes.append(node)
+            display.manager.draw_node(node)
 
             # Find its neighbors
             for neighbor in self.get_neighbors(node.x, node.y):
@@ -72,7 +81,16 @@ class Network():
                 neighbor.add_neighbor(node)
 
     def get_neighbors(self, x, y):
-        return [self.network[0][0]]
-
+        '''Return a list of all the nodes which are within 2
+        blocks of the search coordinate (but not the one on
+        the search cordinate.'''
+        neighbors = []
+        # 0 is nonexistant node (empty space)
+        for xn in range(-2, 3): # Need to go over by 1 for range
+            for yn in range(-2, 3):
+                if self.get_node(x + xn, y + yn):
+                    neighbors.append(self.get_node(x + xn, y + yn))
+        neighbors.remove(self.get_node(x, y)) # Remove origional node
+        return neighbors
     def get_node(self, x, y):
         return self.network[x][y]

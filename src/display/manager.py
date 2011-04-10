@@ -2,6 +2,7 @@ import pygame
 import time
 import thread
 from math import floor
+import sys
 
 import network
 import ui
@@ -18,10 +19,13 @@ size = width, height = 640, 480
 # Setup Window and Media
 pygame.init()
 screen = pygame.display.set_mode(size)
-screen.fill((255,255,255))
+pygame.display.set_caption('Network Wars')
+screen.fill((0,160,8))
 pygame.display.flip()
 
+# Imports after pygame.init()
 import media.loader
+import display.pipes
 
 def calc_fps():
     '''Calculate the FPS the game is going through'''
@@ -42,6 +46,8 @@ def handle_events():
 def draw_node(node):
     '''Draw all the nodes to the screen'''
     rect = pygame.Rect(node.x*10, node.y*10, 10, 10)
+    lrect = pygame.Rect(node.x*10-10, node.y*10-10, 30, 30)
+    screen.blit(display.pipes.pipes, pygame.Rect(0,0,200,200), pygame.Rect(0,0,200,200))
     screen.blit(media.loader.node_img, rect)
     add_dirty_rect(rect)
 
